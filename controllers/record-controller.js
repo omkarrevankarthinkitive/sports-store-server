@@ -5,7 +5,6 @@ const { User } = require("../models/user");
 const getRecord = async (req, res) => {
   const record = await Record.find();
   res.send({ record });
-
 };
 
 const getRecordByUserId = async (req, res) => {
@@ -20,11 +19,18 @@ const getRecordByUserId = async (req, res) => {
 };
 
 const createRecord = async (req, res) => {
+  const training_info = {
+    sports: req.body.sports,
+    training_days_per_month: req.body.training_days_per_month,
+    training_days_per_week: req.body.training_days_per_week,
+    training_hrs_per_day: req.body.training_hrs_per_day,
+  };
   let record = new Record({
     player_name: req.body.player_name,
     age: req.body.age,
     weight: req.body.weight,
     height: req.body.height,
+    training: [training_info],
   });
   console.log("record:", record);
   try {
@@ -44,22 +50,42 @@ const updateRecord = async (req, res) => {
         .send({ msg: "Record is not created", status: 404 });
     if (req.user_id != "undefined") {
       const record = await Record.findById(req.params.id);
-    
+
       if (!record)
         return res.status(400).send({
           msg: "User of this record is not registered !",
           status: 400,
         });
     }
+    console.log("record", record.training);
     record.player_name = req.body.player_name
       ? req.body.player_name
       : record.player_name;
- 
+
+
     (record.age = req.body.age ? req.body.age : record.age),
       (record.weight = req.body.weight ? req.body.weight : record.weight),
       (record.height = req.body.height ? req.body.height : record.height),
-      console.log("record",record)
-      record.save();
+      (record.training = [
+        { sports: req.body.sports ? req.body.sports : record.training.sports },
+        {
+          training_days_per_month: req.body.training_days_per_month
+            ? req.body.training_days_per_month
+            : record.training.training_days_per_month,
+        },
+        {
+          training_days_per_week: req.body.training_days_per_week
+            ? req.body.training_days_per_week
+            : record.training.training_days_per_week,
+        },
+        {
+          training_hrs_per_day: req.body.training_hrs_per_day
+            ? req.body.training_hrs_per_day
+            : record.training.training_hrs_per_day,
+        },
+      ]);
+
+    record.save();
     res.send({ msg: "Record is updated", data: record, status: 200 });
   } catch (err) {
     console.log(err);

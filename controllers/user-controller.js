@@ -157,6 +157,9 @@ const updateUser = async (req, res) => {
         : user.address_info),
       (user.user_image = req.file?.path ? req.file?.path : user.user_image),
       (user.dob = req.body.dob ? req.body.dob : user.dob),
+
+
+
       user.save();
     res.send({ msg: "Profile Updated ", data: user, status: 200 });
   } catch (err) {
