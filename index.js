@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const { DB, PORT, ADMIN_PASSWORD } = require("./config/index.js");
-
+const record_routes =require("./routes/record");
 const auth_routes = require("./routes/auth");
 const user_routes = require("./routes/users");
 const { User } = require("./models/user");
@@ -16,8 +16,9 @@ app.use(
   })
 );
 
-app.use("/api/user/", user_routes);
+app.use("/api/user", user_routes);
 app.use("/api/auth", auth_routes);
+app.use("/api/record", record_routes);
 
 mongoose
   .connect(DB)
