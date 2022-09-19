@@ -61,56 +61,5 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-function validateUserUpdate(user) {
-  const schema = Joi.object().keys({
-    first_name: Joi.string().min(2).max(50),
-    last_name: Joi.string().min(2).max(50),
-    email: Joi.string().email(),
-    profileImage: Joi.string(),
-    password: Joi.string().min(5).max(255),
-    mobile_no: Joi.number(),
-    address_info: Joi.array(),
-    dob: Joi.date(),
-    _id: Joi.string(),
-    user_image: Joi.string(),
-  });
-  return schema.validate(user);
-}
-
-function validateAdmin(userAdmin) {
-  const schema = Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().min(5).max(255).required(),
-  });
-  return schema.validate(user);
-}
-
-
-
-function validatePassword(user) {
-  const schema = Joi.object().keys({
-    email: Joi.string().required().email(),
-    oldpassword: Joi.string().min(5).max(255).required(),
-    newpassword: Joi.string().min(5).max(255).required(),
-  });
-  return schema.validate(user);
-}
-
-function validateAddress(user) {
-  const schema = Joi.object().keys({
-    email: Joi.string().email(),
-    address1: Joi.string().min(2).max(50).required(),
-    address2: Joi.string().min(2).max(50).required(),
-    landmark: Joi.string().min(2).max(50).required(),
-    city: Joi.string().min(2).max(50).required(),
-    pincode: Joi.number().required(),
-  });
-  return schema.validate(user);
-}
-
 module.exports.User = User;
 module.exports.validateUser = validateUser;
-module.exports.validateUserUpdate = validateUserUpdate;
-module.exports.validateAdmin = validateAdmin;
-module.exports.validatePassword = validatePassword;
-module.exports.validateAddress = validateAddress;

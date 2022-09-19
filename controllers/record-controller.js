@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Record, validateRecord } = require("../models/record");
-const { User } = require("../models/user");
 
 const getRecord = async (req, res) => {
   const record = await Record.find();
@@ -19,20 +18,21 @@ const getRecordByUserId = async (req, res) => {
 };
 
 const createRecord = async (req, res) => {
-  const training_info = {
-    sports: req.body.sports,
-    training_days_per_month: req.body.training_days_per_month,
-    training_days_per_week: req.body.training_days_per_week,
-    training_hrs_per_day: req.body.training_hrs_per_day,
-  };
+ const { error } = validateRecord(req.body);
+if (error) return res.status(400).send(error.details[0].message);
+
   let record = new Record({
-    player_name: req.body.player_name,
-    age: req.body.age,
-    weight: req.body.weight,
-    height: req.body.height,
-    training: [training_info],
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phone: req.body.phone,
+    passport: req.body.passport,
+    birthDate: req.body.birthDate,
+    arrivalDate: req.body.arrivalDate,
+    departureDate: req.body.departureDate,
+    accountNumber: req.body.accountNumber,
+    description: req.body.description,
   });
-  console.log("record:", record);
+
   try {
     record = await record.save();
   } catch (err) {
@@ -42,6 +42,8 @@ const createRecord = async (req, res) => {
 };
 
 const updateRecord = async (req, res) => {
+  const { error } = validateRecord(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
   try {
     const record = await Record.findById(req.params.id);
     if (!record)
@@ -58,34 +60,31 @@ const updateRecord = async (req, res) => {
         });
     }
     console.log("record", record.training);
-    record.player_name = req.body.player_name
-      ? req.body.player_name
-      : record.player_name;
+    record.firstName = req.body.firstName
+      ? req.body.firstName
+      : record.firstName;
 
-
-    (record.age = req.body.age ? req.body.age : record.age),
-      (record.weight = req.body.weight ? req.body.weight : record.weight),
-      (record.height = req.body.height ? req.body.height : record.height),
-      (record.training = [
-        { sports: req.body.sports ? req.body.sports : record.training.sports },
-        {
-          training_days_per_month: req.body.training_days_per_month
-            ? req.body.training_days_per_month
-            : record.training.training_days_per_month,
-        },
-        {
-          training_days_per_week: req.body.training_days_per_week
-            ? req.body.training_days_per_week
-            : record.training.training_days_per_week,
-        },
-        {
-          training_hrs_per_day: req.body.training_hrs_per_day
-            ? req.body.training_hrs_per_day
-            : record.training.training_hrs_per_day,
-        },
-      ]);
-
-    record.save();
+    (record.lastName = req.body.lastName ? req.body.lastName : record.lastName),
+      (record.phone = req.body.phone ? req.body.phone : record.phone),
+      (record.passport = req.body.passport
+        ? req.body.passport
+        : record.passport),
+      (record.birthDate = req.body.birthDate
+        ? req.body.birthDate
+        : record.birthDate),
+      (record.arrivalDate = req.body.arrivalDate
+        ? req.body.arrivalDate
+        : record.arrivalDate),
+      (record.departureDate = req.body.departureDate
+        ? req.body.departureDate
+        : record.departureDate),
+      (record.accountNumber = req.body.accountNumber
+        ? req.body.accountNumber
+        : record.accountNumber),
+      (record.description = req.body.description
+        ? req.body.description
+        : record.description),
+      record.save();
     res.send({ msg: "Record is updated", data: record, status: 200 });
   } catch (err) {
     console.log(err);

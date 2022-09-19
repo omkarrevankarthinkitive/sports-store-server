@@ -1,47 +1,61 @@
-const { boolean, string } = require("joi");
+const { boolean, string, number } = require("joi");
 const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const Record = mongoose.model(
   "Record",
   new mongoose.Schema({
-    player_name: {
+    firstName: {
       type: String,
-      minlength: 5,
-      maxlength: 50,
+      required: true,
+      minlength: 3,
+      maxlength: 30,
     },
-    age: {
+    lastName: {
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 30,
+    },
+    phone: {
+      type: Number,
+    },
+    passport: {
       type: String,
     },
-    weight: {
-      type: String,
+    birthDate: {
+      type: Date,
     },
-    height: {
-      type: String,
+    arrivalDate: {
+      type: Date,
     },
-    training: [
-      {
-        sports: String,
-        training_days_per_month: Number,
-        training_days_per_week: Number,
-        training_hrs_per_day: Number,
-      },
-    ],
+    departureDate: {
+      type: Date,
+    },
+    accountNumber: {
+      type: Date,
+    },
+    description: {
+      type: String,
+      minlength: 0,
+      maxlength: 1000,
+    },
   })
 );
 
-function validateRecord() {
+function validateRecord(user) {
   const schema = Joi.object().keys({
-    player_name: Joi.string().min(5).max(30),
-    age: Joi.number(),
-    weight: Joi.number(),
-    height: Joi.number(),
-    sports:Joi.string().min(5).max(30),
-    training_days_per_month: Joi.number(),
-    training_days_per_week: Joi.number(),
-    training_hrs_per_day: Joi.number(),
+    firstName: Joi.string().min(3).max(30).required(),
+    lastName: Joi.string().min(3).max(30).required(),
+    phone: Joi.number(),
+    passport: Joi.string(),
+    birthDate: Joi.date(),
+    arrivalDate: Joi.date(),
+    departureDate: Joi.date(),
+    accountNumber: Joi.number(),
+    description:  Joi.string().min(0).max(1000)
   });
-  return schema.validate(Record);
+  return schema.validate(user);
 }
 
 module.exports.Record = Record;
