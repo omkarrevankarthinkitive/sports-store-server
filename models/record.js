@@ -33,13 +33,13 @@ const Record = mongoose.model(
       type: Date,
     },
     accountNumber: {
-      type: Date,
+      type: Number,
     },
-    description: {
-      type: String,
-      minlength: 0,
-      maxlength: 1000,
-    },
+    description: [
+      {
+        type: String,
+      },
+    ],
   })
 );
 
@@ -53,7 +53,7 @@ function validateRecord(user) {
     arrivalDate: Joi.date(),
     departureDate: Joi.date(),
     accountNumber: Joi.number(),
-    description:  Joi.string().min(0).max(1000)
+    description: Joi.array()
   });
   return schema.validate(user);
 }
