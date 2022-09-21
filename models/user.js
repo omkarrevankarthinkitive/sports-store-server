@@ -32,16 +32,11 @@ const User = mongoose.model(
       {
         address1: String,
         address2: String,
-        landmark: String,
         city: String,
         pincode: Number,
         primary: Boolean,
       },
     ],
-    dob: {
-      type: Date,
-      default: Date.now,
-    },
   })
 );
 function validateUser(user) {
@@ -53,10 +48,8 @@ function validateUser(user) {
     mobile_no: Joi.number().required(),
     address1: Joi.string().min(2).max(50).required(),
     address2: Joi.string().min(2).max(50).required(),
-    landmark: Joi.string().min(2).max(50).required(),
     city: Joi.string().min(2).max(50).required(),
     pincode: Joi.number().required(),
-    dob: Joi.date().required(),
   });
   return schema.validate(user);
 }

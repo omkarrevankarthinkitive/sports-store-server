@@ -37,13 +37,11 @@ router.post("/", async (req, res) => {
     address_info:[{
       address1:req.body.address1,
       address2: req.body.address2,
-      landmark: req.body.landmark,
       city:req.body.city,
       pincode:req.body.pincode,
       primary:req.body.primary,
     }
   ],
-    dob: req.body.dob,
   });
   try {
     user = await user.save();
