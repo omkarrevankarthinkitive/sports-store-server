@@ -8,6 +8,9 @@ router.use(auth_middleware);
 //Get Request
 router.get("/", recordController.getRecord);
 
+// Get Request
+router.get("/search", recordController.getRecordBySearch);
+
 //  Get Request for particular id
 router.get("/:id", recordController.getRecordByUserId);
 

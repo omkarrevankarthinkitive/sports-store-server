@@ -6,6 +6,17 @@ const getRecord = async (req, res) => {
   res.send({ record });
 };
 
+
+const getRecordBySearch = async (req, res) => {
+  const search = req.query.search;
+  const record = await Record.find();
+  const filterData = record.filter((record) =>
+    record.firstName.toLowerCase().includes(search.toLowerCase())
+  );
+  return res.send({ msg: "Okk", data: filterData, status: 200 });
+};
+
+
 const getRecordByUserId = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id))
     return res.status(400).send({ msg: "User Id is not valid", status: 400 });
@@ -105,3 +116,4 @@ module.exports.getRecordByUserId = getRecordByUserId;
 module.exports.createRecord = createRecord;
 module.exports.updateRecord = updateRecord;
 module.exports.deleteRecord = deleteRecord;
+module.exports.getRecordBySearch=getRecordBySearch;
