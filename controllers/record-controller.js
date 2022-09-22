@@ -8,7 +8,7 @@ const getRecord = async (req, res) => {
 
 
 const getRecordBySearch = async (req, res) => {
-  const search = req.query.search;
+  const search = req.query.query;
   const record = await Record.find();
   const filterData = record.filter((record) =>
     record.firstName.toLowerCase().includes(search.toLowerCase())
